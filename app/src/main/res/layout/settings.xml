@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RadioGroup
+android:id="@+id/rg_room_choice"
+android:layout_width="175dp"
+android:layout_height="187dp"
+android:layout_marginStart="44dp"
+android:layout_marginTop="180dp"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent">
+
+<RadioButton
+    android:id="@+id/rb_Home"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="@string/title_home" />
+
+<RadioButton
+    android:id="@+id/rb_room1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Room 1" />
+
+<RadioButton
+    android:id="@+id/rb_room2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Room 2" />
+
+<RadioButton
+    android:id="@+id/rv_room3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="Room 3" />
+</RadioGroup>
+
+<android.support.design.widget.BottomNavigationView
+android:id="@+id/navigation_dashboard2"
+android:layout_width="606dp"
+android:layout_height="58dp"
+android:background="?android:attr/windowBackground"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:menu="@menu/navigation" />
+
+<Button
+android:id="@+id/btn_choose_room"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginStart="84dp"
+android:layout_marginTop="52dp"
+android:text="CHOOSE"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/rg_room_choice" />
+    </android.support.constraint.ConstraintLayout>

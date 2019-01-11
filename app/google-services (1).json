@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "661732693700",
+    "firebase_url": "https://nhlights-efe21.firebaseio.com",
+    "project_id": "nhlights-efe21",
+    "storage_bucket": "nhlights-efe21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:661732693700:android:4dd7923cc1e86d1c",
+        "android_client_info": {
+          "package_name": "vitalinstinct.nh_lights"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "661732693700-qkkdgd5h3c2g40g35jba1kql8q37cajj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vitalinstinct.nh_lights",
+            "certificate_hash": "90723cb60172c8445f25dabb3eae4b2aa4be335e"
+          }
+        },
+        {
+          "client_id": "661732693700-v75081sj5ua6er42nbohcd7bi7nhbr7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHV8ukUv7_MFInN_xBxNQa_Gj44WoDYBI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661732693700-v75081sj5ua6er42nbohcd7bi7nhbr7o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

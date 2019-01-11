@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>room</key>
+        <value>home</value>
+    </entry>
+    <!-- color entries -->
+    <entry>
+        <key>color_primary</key>
+        <value>#3F51B5</value>
+    </entry>
+    <entry>
+        <key>color_primary_dark</key>
+        <value>#303F9F</value>
+    </entry>
+</defaultsMap>
