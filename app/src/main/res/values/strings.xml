@@ -2,5 +2,5 @@
     <string name="app_name">nh-Lights</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_room_information">Room Information</string>
+    <string name="title_patterns">Patterns</string>
 </resources>

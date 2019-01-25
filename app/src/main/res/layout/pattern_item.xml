@@ -17,12 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_light_name" />
 
-    <ToggleButton
+    <Button
         android:id="@+id/tb_light_status"
         android:layout_width="134dp"
         android:layout_height="93dp"
         android:layout_marginStart="8dp"
-        android:text="ToggleButton"
+        android:text="Send Pattern"
         android:textColorHighlight="#CDDC39"
         android:textColorLink="#FFEB3B"
         android:textCursorDrawable="@color/hsGreen"

@@ -36,6 +36,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     String ROOM = "Blue room";
+    int PATTERN_ID_OFF, PATTERN_ID_ON = 0;
 
     // cache expiration in seconds
     long cacheExpiration = 3600;
@@ -51,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
     ToggleButton tb_lightHomeAll;
     ImageView iv_lightHomeAll;
     TextView tv_room_information, tv_room_temperature, tv_home_time, tv_home_date;
-    RecyclerView rv_dashboard_lights;
-    RecyclerView.Adapter rv_dashboard_lights_adaptor;
-    RecyclerView.LayoutManager rv_dashboard_lights_layout_manager;
-    BottomNavigationView navigation2, navigation3;
+    RecyclerView rv_dashboard_lights, rv_patterns;
+    RecyclerView.Adapter rv_dashboard_lights_adaptor, rv_patterns_adaptor;
+    RecyclerView.LayoutManager rv_dashboard_lights_layout_manager, rv_patterns_layout_manager;
+    BottomNavigationView navigation, navigation2, navigation3, navigation4;
     ArrayList<Light> lights;
 
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         vf = (ViewFlipper) findViewById(R.id.view_flipper);
 
 
-        // for future implementation......
+        /* // for future implementation......
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings remoteConfigSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -95,10 +96,11 @@ public class MainActivity extends AppCompatActivity {
 
                 });
        // ROOM = mFirebaseRemoteConfig.getString("room");
+       */
 
 
         try {
-            handler = new ProcessHandler(ROOM);
+            handler = new ProcessHandler(ROOM, rv_dashboard_lights_adaptor, this);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -119,13 +121,23 @@ public class MainActivity extends AppCompatActivity {
                         vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_dashboard_lights)));
                         rv_dashboard_lights = (RecyclerView) findViewById(R.id.rv_dasboard_lights);
                         rv_dashboard_lights_layout_manager = new GridLayoutManager(getApplicationContext(), 4);
-                        handler.getRoomData(ROOM); //TESTING DISABLED
+                        //   handler.getRoomData(ROOM); //TESTING DISABLED
                         rv_dashboard_lights.setLayoutManager(rv_dashboard_lights_layout_manager);
-                        RVAdaptorLights adap = new RVAdaptorLights(handler.getLightData(ROOM), handler);
-                       // RVAdaptorLights adap = new RVAdaptorLights(lights, handler); // above code for release, testing only
-                        rv_dashboard_lights.setAdapter(adap);
+                        rv_dashboard_lights_adaptor = new RVAdaptorLights(handler.getLightData(ROOM), handler, ROOM);
+                        // RVAdaptorLights adap = new RVAdaptorLights(lights, handler); // above code for release, testing only
+                        rv_dashboard_lights.setAdapter(rv_dashboard_lights_adaptor);
+                        rv_dashboard_lights_adaptor.notifyDataSetChanged();
+                        handler.updateAdaptor(rv_dashboard_lights_adaptor);
                         return true;
-                    case R.id.navigation_notifications:
+                    case R.id.navigation_patterns:
+                        vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_dashboard_patterns)));
+                        rv_patterns = (RecyclerView) findViewById(R.id.rv_dasboard_patterns);
+                        rv_patterns_layout_manager = new GridLayoutManager(getApplicationContext(), 4);
+                        rv_patterns.setLayoutManager(rv_patterns_layout_manager);
+                        rv_patterns_adaptor = new RVAdaptorPatterns(handler.getPatterns(), handler, ROOM);
+                        rv_patterns.setAdapter(rv_patterns_adaptor);
+                        rv_patterns_adaptor.notifyDataSetChanged();
+                        handler.updateAdaptor(rv_patterns_adaptor);
                         return true;
                 }
                 return false;
@@ -133,52 +145,47 @@ public class MainActivity extends AppCompatActivity {
         };
 
         tv_home_time = (TextView) findViewById(R.id.tv_home_time);
-        tv_home_date = (TextView) findViewById(R.id.tv_home_date);
+       // tv_home_date = (TextView) findViewById(R.id.tv_home_date);
+        tv_room_temperature = (TextView) findViewById(R.id.tv_homeTemp);
+
+        tv_home_time.setTextColor(Color.WHITE);
+        //tv_home_date.setTextColor(Color.WHITE);
+        tv_room_temperature.setTextColor(Color.WHITE);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation_home);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation_home);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation2 = (BottomNavigationView) findViewById(R.id.navigation_dashboard2);
         navigation2.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation3 = (BottomNavigationView) findViewById(R.id.navigation_dashboard3);
         navigation3.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation4 = (BottomNavigationView) findViewById(R.id.navigation_dashboard4);
+        navigation4.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         tv_room_information = (TextView) findViewById(R.id.tv_RoomName);
+        tv_room_information.setTextColor(Color.WHITE);
         tv_room_information.setText(ROOM);
 
         iv_lightHomeAll = (ImageView) findViewById(R.id.iv_homeLightStatus);
-        iv_lightHomeAll.setBackgroundColor(Color.GRAY);
+        iv_lightHomeAll.setImageResource(R.drawable.ic_light_off);
 
         tb_lightHomeAll = (ToggleButton) findViewById(R.id.tb_LightHomeAll);
-        tb_lightHomeAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                {
-                    // id set to 1 on home screen, need to implement patterns or custom light setup for overall main control.
-                    handler.handleChangeCommand("button", 1, true, ROOM);
-                    iv_lightHomeAll.setBackgroundColor(Color.YELLOW);
-                }
-                else
-                {
-                    handler.handleChangeCommand("button", 1, false, ROOM);
-                    iv_lightHomeAll.setBackgroundColor(Color.GRAY);
-                }
-            }
-        });
+
 
         final Thread time = new Thread() {
             @Override
             public void run() {
                 try {
+                    while (true) {
                         Thread.sleep(1000);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 tv_home_time.setText(Calendar.getInstance().getTime().toString());
-                               // tv_home_date.setText(Calendar.getInstance().get);
+                                // tv_home_date.setText(Calendar.getInstance().get);
                             }
                         });
+                    }
                 } catch (InterruptedException e) {
                 }
             }
@@ -187,6 +194,77 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
+
+    }
+
+    private void getPatternId()
+    {
+        for (int i=0; i< handler.getPatterns().size(); i++)
+        {
+            if (handler.getPatterns().get(i).getName().startsWith(ROOM.substring(0, 3)) && handler.getPatterns().get(i).getName().contains("Off"))
+            {
+                PATTERN_ID_OFF = handler.getPatterns().get(i).getPatternId();
+            }
+
+            if (handler.getPatterns().get(i).getName().startsWith(ROOM.substring(0, 3)) && handler.getPatterns().get(i).getName().contains("On"))
+            {
+                PATTERN_ID_ON = handler.getPatterns().get(i).getPatternId();
+            }
+        }
+    }
+
+    public void createControls(boolean setting)
+    {
+        getPatternId();
+        tb_lightHomeAll.setOnCheckedChangeListener(null);
+
+        if (setting == true)
+        {
+            iv_lightHomeAll.setImageResource(R.drawable.ic_light_on);
+            tb_lightHomeAll.setChecked(true);
+        }
+        if (setting == false)
+        {
+            iv_lightHomeAll.setImageResource(R.drawable.ic_light_off);
+            tb_lightHomeAll.setChecked(false);
+        }
+
+        tb_lightHomeAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    // id set to 1 on home screen, need to implement patterns or custom light setup for overall main control.
+                    //handler.handleChangeCommand("button", 1, true, ROOM);
+
+                    for (int i=0; i< handler.getRooms().size(); i++)
+                    {
+                        if (handler.getRooms().get(i).getName().equals(ROOM))
+                        {
+                            handler.handleChangeCommand("pattern", PATTERN_ID_ON, true, ROOM);
+                        }
+                    }
+
+                    //iv_lightHomeAll.setBackgroundColor(Color.YELLOW);
+                    iv_lightHomeAll.setImageResource(R.drawable.ic_light_on);
+                }
+                else
+                {
+                    //handler.handleChangeCommand("button", 1, false, ROOM);
+                    for (int i=0; i< handler.getRooms().size(); i++)
+                    {
+                        if (handler.getRooms().get(i).getName().equals(ROOM))
+                        {
+                            handler.handleChangeCommand("pattern", PATTERN_ID_OFF, true, ROOM);
+                        }
+                    }
+
+                    //iv_lightHomeAll.setBackgroundColor(Color.GRAY);
+                    iv_lightHomeAll.setImageResource(R.drawable.ic_light_off);
+                }
+            }
+        });
+
     }
 
     @Override

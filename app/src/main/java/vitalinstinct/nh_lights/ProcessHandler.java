@@ -1,6 +1,9 @@
 package vitalinstinct.nh_lights;
 
 
+import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
+
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -11,21 +14,97 @@ public class ProcessHandler {
 
     JSONProcessor create;
     NetworkControl netCon;
+    RecyclerView.Adapter rv_dashboard_lights_adaptor;
+    MainActivity parent;
+    String room;
 
     public ArrayList<Room> rooms = new ArrayList<>();
+    public ArrayList<Pattern> patterns = new ArrayList<>();
+
+    public ArrayList<Pattern> getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(ArrayList<Pattern> patterns) {
+        this.patterns = patterns;
+    }
+
+    public ArrayList<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(ArrayList<Room> rooms) {
+        this.rooms = rooms;
+    }
 
 
-    public ProcessHandler(String room) throws URISyntaxException {
+    public ProcessHandler(String room, RecyclerView.Adapter rv_dashboard_lights_adaptor, MainActivity parent) throws URISyntaxException {
         create = new JSONProcessor(this);
         netCon = new NetworkControl(this);
 
+        this.rv_dashboard_lights_adaptor = rv_dashboard_lights_adaptor;
+        this.parent = parent;
+        this.room = room;
+
+    }
+
+    public void updateAdaptor(RecyclerView.Adapter rv_dashboard_lights_adaptor)
+    {
+        this.rv_dashboard_lights_adaptor = rv_dashboard_lights_adaptor;
+        //rv_dashboard_lights_adaptor.notifyDataSetChanged();
+    }
+
+    public void updateDashboardLights()
+    {
+        //rv_dashboard_lights_adaptor.notifyDataSetChanged();
+        parent.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                parent.rv_dashboard_lights_adaptor.notifyDataSetChanged();
+            }
+        });
+        checkLights();
+    }
+
+    public void checkLights()
+    {
+        boolean lightOn = false;
+        for (int i=0; i< rooms.size(); i++)
+        {
+            if (rooms.get(i).getName().equals(room)) {
+                for (int ii=0; ii< rooms.get(i).getLights().size(); ii++) {
+                    if (rooms.get(i).getLights().get(ii).getSingleState().equals("ON"))
+                    {
+                        lightOn = true;
+                    }
+                }
+            }
+        }
+
+        if (lightOn == true)
+        {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    parent.createControls(true);
+                }
+            });
+        }
+        if (lightOn == false)
+        {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    parent.createControls(false);
+                }
+            });
+        }
     }
 
     public void handleChangeCommand(String type, int id, boolean state, String room)
     {
         if (type.equals("button"))
         {
-
             // TOGGLE or on and off?????
             if (id == 0)
             {
@@ -37,7 +116,13 @@ public class ProcessHandler {
             }
         }
 
+        if (type.equals("pattern"))
+        {
+            netCon.sendWebMessage(create.jsonConstructPatternCommand(id));
+        }
     }
+
+
 
     public void getRoomData(String room)
     {
@@ -47,11 +132,42 @@ public class ProcessHandler {
     public void loadData(ArrayList rooms)
     {
         this.rooms = rooms;
+        checkLights();
     }
 
     public void updateStatus()
     {
 
+    }
+
+    public void updateAllLights(boolean setting, String room)
+    {
+        if (setting == true)
+        {
+            for (int i=0; i< rooms.size(); i++)
+            {
+                if (rooms.get(i).getName().equals(room))
+                {
+                    for (int ii=0; ii< rooms.get(i).getLights().size(); ii++)
+                    {
+                        netCon.sendWebMessage(create.jsonConstructLightCommand(newLight("null", rooms.get(i).getLights().get(ii).getId(), "ON", room), 0));
+                    }
+                }
+            }
+        }
+        if (setting == false)
+        {
+            for (int i=0; i< rooms.size(); i++)
+            {
+                if (rooms.get(i).getName().equals(room))
+                {
+                    for (int ii=0; ii< rooms.get(i).getLights().size(); ii++)
+                    {
+                        netCon.sendWebMessage(create.jsonConstructLightCommand(newLight("null", rooms.get(i).getLights().get(ii).getId(), "OFF", room), 0));
+                    }
+                }
+            }
+        }
     }
 
     public void getLights(String room, ArrayList<Integer> room_lights)
@@ -78,6 +194,7 @@ public class ProcessHandler {
         light.setSingleState(state);
         return light;
     }
+
 
 
 

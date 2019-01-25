@@ -50,11 +50,13 @@ public class NetworkControl {
         connectCommand = json.jsonConstructInitialCommand("{token}");
         cn.send(connectCommand.toString());
 
+
     }
 
     public void sendWebMessage(JSONObject object)
     {
         cn.send(object.toString());
+        System.out.println( "sent: " + object.toString() );
     }
 
     public void loadData(String room)
@@ -71,7 +73,7 @@ public class NetworkControl {
     {
 
         // resend connect request to get status?
-        cn.send(connectCommand.toString());
+        //cn.send(connectCommand.toString());
 
         JSONObject obj = new JSONObject();
         try {

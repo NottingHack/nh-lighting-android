@@ -51,35 +51,43 @@ public class RVAdaptorLights extends RecyclerView.Adapter<RVAdaptorLights.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
-        Light light = lights.get(i);
+        final Light light = lights.get(i);
 
         viewHolder.text_light_information.setText(String.valueOf(light.getId()));
-        viewHolder.iv_light_status.setBackgroundColor(Color.GRAY);
+        //viewHolder.iv_light_status.setBackgroundColor(Color.GRAY);
+        viewHolder.tb_light_status.setOnCheckedChangeListener(null);
+
+        if (light.getSingleState().equals("ON"))
+        {
+           // viewHolder.iv_light_status.setBackgroundColor(Color.YELLOW);
+            viewHolder.iv_light_status.setImageResource(R.drawable.ic_light_on);
+            viewHolder.tb_light_status.setChecked(true);
+        }
+        else
+        {
+            //viewHolder.iv_light_status.setBackgroundColor(Color.GRAY);
+            viewHolder.iv_light_status.setImageResource(R.drawable.ic_light_off);
+            viewHolder.tb_light_status.setChecked(false);
+        }
 
         viewHolder.tb_light_status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
                 {
-                     handler.handleChangeCommand("button", i, true, room);
-                    viewHolder.iv_light_status.setBackgroundColor(Color.YELLOW);
+                     handler.handleChangeCommand("button", light.getId(), true, room);
+                   // viewHolder.iv_light_status.setBackgroundColor(Color.YELLOW);
+                    viewHolder.iv_light_status.setImageResource(R.drawable.ic_light_on);
+
                 }
                 else
                 {
-                     handler.handleChangeCommand("button", i, false, room);
-                    viewHolder.iv_light_status.setBackgroundColor(Color.GRAY);
+                     handler.handleChangeCommand("button", light.getId(), false, room);
+                   // viewHolder.iv_light_status.setBackgroundColor(Color.GRAY);
+                    viewHolder.iv_light_status.setImageResource(R.drawable.ic_light_off);
                 }
             }
         });
-
-        if (light.getSingleState() == "ON")
-        {
-            viewHolder.tb_light_status.setChecked(true);
-        }
-        else
-        {
-            viewHolder.tb_light_status.setChecked(false);
-        }
     }
 
     @Override
