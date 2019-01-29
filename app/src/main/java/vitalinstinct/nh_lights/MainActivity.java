@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rv_dashboard_lights, rv_patterns;
     RecyclerView.Adapter rv_dashboard_lights_adaptor, rv_patterns_adaptor;
     RecyclerView.LayoutManager rv_dashboard_lights_layout_manager, rv_patterns_layout_manager;
-    BottomNavigationView navigation, navigation2, navigation3, navigation4;
+    BottomNavigationView navigation;
     ArrayList<Light> lights;
 
 
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         vf = (ViewFlipper) findViewById(R.id.view_flipper);
-
 
         /* // for future implementation......
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -155,12 +155,6 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         navigation = (BottomNavigationView) findViewById(R.id.navigation_home);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation2 = (BottomNavigationView) findViewById(R.id.navigation_dashboard2);
-        navigation2.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation3 = (BottomNavigationView) findViewById(R.id.navigation_dashboard3);
-        navigation3.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation4 = (BottomNavigationView) findViewById(R.id.navigation_dashboard4);
-        navigation4.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         tv_room_information = (TextView) findViewById(R.id.tv_RoomName);
         tv_room_information.setTextColor(Color.WHITE);
@@ -195,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
 
+        //testing
+        handler.testing();
     }
 
     private void getPatternId()
@@ -280,10 +276,22 @@ public class MainActivity extends AppCompatActivity {
            // go to settings
             vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_settings)));
             Button btn_room_choice = (Button) findViewById(R.id.btn_choose_room);
+            final RadioGroup rg = (RadioGroup) findViewById(R.id.rg_room_choice);
+            rg.removeAllViews();
+
+            for (int i=0; i< handler.getRooms().size(); i++)
+            {
+                RadioButton rb = new RadioButton(this);
+                rb.setId(View.generateViewId());
+                rb.setText(handler.getRooms().get(i).getName());
+                LinearLayout.LayoutParams pm = new LinearLayout.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT, 1f);
+                rb.setLayoutParams(pm);
+                rg.addView(rb);
+            }
+
             btn_room_choice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RadioGroup rg = (RadioGroup) findViewById(R.id.rg_room_choice);
                     int selected = rg.getCheckedRadioButtonId();
                     RadioButton rgbtn = (RadioButton) findViewById(selected);
                     ROOM = rgbtn.getText().toString();

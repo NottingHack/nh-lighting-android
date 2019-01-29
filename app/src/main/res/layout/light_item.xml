@@ -19,13 +19,17 @@
 
     <ToggleButton
         android:id="@+id/tb_light_status"
-        android:layout_width="134dp"
-        android:layout_height="93dp"
+        android:layout_width="136dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/selector"
         android:text="ToggleButton"
         android:textColorHighlight="#CDDC39"
         android:textColorLink="#FFEB3B"
         android:textCursorDrawable="@color/hsGreen"
+        android:textOff=""
+        android:textOn=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_light_status" />
 
@@ -36,6 +40,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:layout_width="112dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="212dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

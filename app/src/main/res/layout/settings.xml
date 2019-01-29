@@ -6,45 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<RadioGroup
-android:id="@+id/rg_room_choice"
-android:layout_width="175dp"
-android:layout_height="187dp"
-android:layout_marginStart="44dp"
-android:layout_marginTop="180dp"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="165dp"
+        android:layout_height="193dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="552dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_dev" />
 
-<RadioButton
-    android:id="@+id/rb_Home"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="@string/title_home" />
+    <RadioGroup
+        android:id="@+id/rg_room_choice"
+        android:layout_width="553dp"
+        android:layout_height="363dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<RadioButton
-    android:id="@+id/rb_room1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Room 1" />
-
-<RadioButton
-    android:id="@+id/rb_room2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Room 2" />
-
-<RadioButton
-    android:id="@+id/rv_room3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:text="Room 3" />
-</RadioGroup>
-
-<android.support.design.widget.BottomNavigationView
+    <android.support.design.widget.BottomNavigationView
 android:id="@+id/navigation_dashboard2"
 android:layout_width="606dp"
 android:layout_height="58dp"
@@ -53,13 +34,23 @@ app:layout_constraintBottom_toBottomOf="parent"
 app:layout_constraintStart_toStartOf="parent"
 app:menu="@menu/navigation" />
 
-<Button
-android:id="@+id/btn_choose_room"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginStart="84dp"
-android:layout_marginTop="52dp"
-android:text="CHOOSE"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toBottomOf="@+id/rg_room_choice" />
-    </android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_choose_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="268dp"
+        android:layout_marginTop="40dp"
+        android:text="CHOOSE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rg_room_choice" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="377dp"
+        android:layout_height="187dp"
+        android:layout_marginStart="196dp"
+        android:layout_marginTop="556dp"
+        android:text='Images throughout the app are a combination of custom images and used from following sources: "Designed by Harryarts / Freepik" "Vecteezy.com"'
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

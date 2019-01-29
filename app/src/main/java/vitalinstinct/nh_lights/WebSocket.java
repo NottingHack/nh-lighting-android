@@ -26,7 +26,7 @@ public class WebSocket extends WebSocketClient {
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        System.out.println("CONNECTED");
+        System.out.println("CONNECTED" + handshakedata.getHttpStatusMessage());
     }
 
     @Override
@@ -59,6 +59,6 @@ public class WebSocket extends WebSocketClient {
 
     @Override
     public void onError(Exception ex) {
-
+        System.out.println(ex.toString());
     }
 }

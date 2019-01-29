@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/iv_bg_home"
+        android:layout_width="681dp"
+        android:layout_height="1063dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_home" />
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_home"
         android:layout_width="0dp"
@@ -78,15 +87,18 @@
 
     <ToggleButton
         android:id="@+id/tb_LightHomeAll"
-        android:layout_width="231dp"
-        android:layout_height="115dp"
+        android:layout_width="240dp"
+        android:layout_height="64dp"
+        android:background="@drawable/selector"
         android:text="ToggleButton"
+        android:textOff=""
+        android:textOn=""
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintHorizontal_bias="0.455"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.845" />
+        app:layout_constraintVertical_bias="0.782" />
 
 </android.support.constraint.ConstraintLayout>

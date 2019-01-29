@@ -4,6 +4,8 @@ package vitalinstinct.nh_lights;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 
+import org.json.JSONObject;
+
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -45,13 +47,6 @@ public class ProcessHandler {
         this.rv_dashboard_lights_adaptor = rv_dashboard_lights_adaptor;
         this.parent = parent;
         this.room = room;
-
-    }
-
-    public void updateAdaptor(RecyclerView.Adapter rv_dashboard_lights_adaptor)
-    {
-        this.rv_dashboard_lights_adaptor = rv_dashboard_lights_adaptor;
-        //rv_dashboard_lights_adaptor.notifyDataSetChanged();
     }
 
     public void updateDashboardLights()
@@ -122,22 +117,10 @@ public class ProcessHandler {
         }
     }
 
-
-
-    public void getRoomData(String room)
-    {
-        netCon.getRoomData(room);
-    }
-
     public void loadData(ArrayList rooms)
     {
         this.rooms = rooms;
         checkLights();
-    }
-
-    public void updateStatus()
-    {
-
     }
 
     public void updateAllLights(boolean setting, String room)
@@ -170,11 +153,6 @@ public class ProcessHandler {
         }
     }
 
-    public void getLights(String room, ArrayList<Integer> room_lights)
-    {
-        netCon.getLights(room, room_lights);
-    }
-
     public ArrayList<Light> getLightData(String room)
     {
         for (int i=0; i< rooms.size(); i++) {
@@ -193,6 +171,11 @@ public class ProcessHandler {
         light.setRoom(room);
         light.setSingleState(state);
         return light;
+    }
+
+    public void testing()
+    {
+        netCon.sendWebMessage(new JSONObject());
     }
 
 
