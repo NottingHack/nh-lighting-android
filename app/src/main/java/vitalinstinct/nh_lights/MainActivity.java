@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
                         // RVAdaptorLights adap = new RVAdaptorLights(lights, handler); // above code for release, testing only
                         rv_dashboard_lights.setAdapter(rv_dashboard_lights_adaptor);
                         rv_dashboard_lights_adaptor.notifyDataSetChanged();
-                        handler.updateAdaptor(rv_dashboard_lights_adaptor);
                         return true;
                     case R.id.navigation_patterns:
                         vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_dashboard_patterns)));
@@ -137,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                         rv_patterns_adaptor = new RVAdaptorPatterns(handler.getPatterns(), handler, ROOM);
                         rv_patterns.setAdapter(rv_patterns_adaptor);
                         rv_patterns_adaptor.notifyDataSetChanged();
-                        handler.updateAdaptor(rv_patterns_adaptor);
                         return true;
                 }
                 return false;
