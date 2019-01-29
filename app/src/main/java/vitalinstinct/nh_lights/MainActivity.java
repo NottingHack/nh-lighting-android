@@ -57,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter rv_dashboard_lights_adaptor, rv_patterns_adaptor;
     RecyclerView.LayoutManager rv_dashboard_lights_layout_manager, rv_patterns_layout_manager;
     BottomNavigationView navigation;
-    ArrayList<Light> lights;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,14 +95,12 @@ public class MainActivity extends AppCompatActivity {
        // ROOM = mFirebaseRemoteConfig.getString("room");
        */
 
-
         try {
             handler = new ProcessHandler(ROOM, rv_dashboard_lights_adaptor, this);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        lights = new ArrayList<>();
 
 
         BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -121,10 +116,8 @@ public class MainActivity extends AppCompatActivity {
                         vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_dashboard_lights)));
                         rv_dashboard_lights = (RecyclerView) findViewById(R.id.rv_dasboard_lights);
                         rv_dashboard_lights_layout_manager = new GridLayoutManager(getApplicationContext(), 4);
-                        //   handler.getRoomData(ROOM); //TESTING DISABLED
                         rv_dashboard_lights.setLayoutManager(rv_dashboard_lights_layout_manager);
                         rv_dashboard_lights_adaptor = new RVAdaptorLights(handler.getLightData(ROOM), handler, ROOM);
-                        // RVAdaptorLights adap = new RVAdaptorLights(lights, handler); // above code for release, testing only
                         rv_dashboard_lights.setAdapter(rv_dashboard_lights_adaptor);
                         rv_dashboard_lights_adaptor.notifyDataSetChanged();
                         return true;
@@ -188,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //testing
-        handler.testing();
+       // handler.testing();
     }
 
     private void getPatternId()

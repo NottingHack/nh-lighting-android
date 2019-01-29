@@ -51,10 +51,6 @@ public class JSONProcessor {
             light.setSingleState(object.getString("state"));
             light.setId(object.getInt("light"));
 
-
-            //Gson gson = new Gson();
-            //Light light = gson.fromJson(object.toString(), Light.class);
-
             for (int i = 0; i < handler.getRooms().size(); i++) {
                 if (handler.getRooms().get(i).name.equals(light.getRoom())) {
                     for (int ii = 0; ii < handler.getRooms().get(i).getLights().size(); ii++) {
@@ -159,11 +155,6 @@ public class JSONProcessor {
                 }
             }
         }
-    }
-
-    public void jsonConstructCheckState(Light light)
-    {
-
     }
 
     public JSONObject jsonConstructLightCommand(Light light, int stateId)
