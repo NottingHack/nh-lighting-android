@@ -132,8 +132,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
         BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
                 = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -205,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         final Thread time = new Thread() {
             @Override
             public void run() {
@@ -247,7 +244,6 @@ public class MainActivity extends AppCompatActivity {
                 String location = message.substring(0, message.indexOf("("));
                 String user = message.substring(message.indexOf(":") + 1);
                 tts.speak(user + " in the" + location, TextToSpeech.QUEUE_FLUSH, null);
-
             }
         }
     }
