@@ -1,6 +1,7 @@
 package vitalinstinct.nh_lights;
 
 
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.java_websocket.drafts.Draft_6455;
 import org.java_websocket.extensions.IExtension;
 import org.java_websocket.protocols.IProtocol;
@@ -26,7 +27,7 @@ public class NetworkControl {
 
     JSONObject connectCommand;
 
-    public NetworkControl(ProcessHandler handler) throws URISyntaxException {
+    public NetworkControl(ProcessHandler handler, MainActivity activity) throws URISyntaxException {
         this.handler = handler;
         json = new JSONProcessor(handler);
 
@@ -46,9 +47,13 @@ public class NetworkControl {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+
+        MQTT client = new MQTT(activity);
+        client.connect();
+
         connectCommand = json.jsonConstructInitialCommand("{token}");
         cn.send(connectCommand.toString());
-
 
     }
 

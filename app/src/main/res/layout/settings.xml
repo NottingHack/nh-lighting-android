@@ -53,4 +53,23 @@ app:menu="@menu/navigation" />
         android:text='Images throughout the app are a combination of custom images and used from following sources: "Designed by Harryarts / Freepik" "Vecteezy.com"'
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tb_settings_audio_greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_audio_greeting" />
+
+    <TextView
+        android:id="@+id/tv_settings_audio_greeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="772dp"
+        android:text="Audio Greeting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

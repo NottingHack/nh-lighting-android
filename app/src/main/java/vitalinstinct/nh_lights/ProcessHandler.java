@@ -42,7 +42,7 @@ public class ProcessHandler {
 
     public ProcessHandler(String room, RecyclerView.Adapter rv_dashboard_lights_adaptor, MainActivity parent) throws URISyntaxException {
         create = new JSONProcessor(this);
-        netCon = new NetworkControl(this);
+        netCon = new NetworkControl(this, parent);
 
         this.rv_dashboard_lights_adaptor = rv_dashboard_lights_adaptor;
         this.parent = parent;

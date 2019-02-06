@@ -9,9 +9,9 @@
 
     <ImageView
         android:id="@+id/iv_bg_home"
-        android:layout_width="681dp"
-        android:layout_height="1063dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleY="1.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bg_home" />
@@ -39,10 +39,10 @@
 
     <TextView
         android:id="@+id/tv_RoomName"
-        android:layout_width="146dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="288dp"
-        android:layout_marginTop="268dp"
+        android:layout_width="202dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="264dp"
+        android:layout_marginTop="256dp"
         android:text="@string/title_patterns"
         android:textColor="#00F5F1F1"
         android:textSize="24sp"
@@ -51,9 +51,9 @@
 
     <TextView
         android:id="@+id/tv_home_time"
-        android:layout_width="286dp"
+        android:layout_width="355dp"
         android:layout_height="58dp"
-        android:layout_marginStart="312dp"
+        android:layout_marginStart="250dp"
         android:layout_marginTop="184dp"
         android:text="Time"
         android:textColor="#00FCFAFA"
@@ -76,7 +76,7 @@
         android:id="@+id/tv_homeTemp"
         android:layout_width="110dp"
         android:layout_height="47dp"
-        android:layout_marginTop="268dp"
+        android:layout_marginTop="256dp"
         android:text="Temperature"
         android:textColor="#00F7F5F5"
         android:textSize="24sp"
@@ -100,5 +100,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.782" />
+
+    <ImageView
+        android:id="@+id/iv_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="312dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_upload" />
+
+    <TextView
+        android:id="@+id/tv_notification_entry"
+        android:layout_width="284dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="316dp"
+        android:layout_marginTop="312dp"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

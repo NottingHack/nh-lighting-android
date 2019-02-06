@@ -3,6 +3,7 @@ package vitalinstinct.nh_lights;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,9 +32,23 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import java.net.InetAddress;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,13 +66,19 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
-    ToggleButton tb_lightHomeAll;
+    ToggleButton tb_lightHomeAll, tb_settings_audio_greeting;
     ImageView iv_lightHomeAll;
-    TextView tv_room_information, tv_room_temperature, tv_home_time, tv_home_date;
+    TextView tv_room_information, tv_room_temperature, tv_home_time, tv_home_date, tv_notification_entry;
     RecyclerView rv_dashboard_lights, rv_patterns;
     RecyclerView.Adapter rv_dashboard_lights_adaptor, rv_patterns_adaptor;
     RecyclerView.LayoutManager rv_dashboard_lights_layout_manager, rv_patterns_layout_manager;
     BottomNavigationView navigation;
+
+    MqttAndroidClient client;
+
+    TextToSpeech tts;
+
+    boolean audioGreetingEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         vf = (ViewFlipper) findViewById(R.id.view_flipper);
+
+        tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    tts.setLanguage(Locale.UK);
+                }
+            }
+        });
 
         /* // for future implementation......
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -151,10 +182,28 @@ public class MainActivity extends AppCompatActivity {
         tv_room_information.setTextColor(Color.WHITE);
         tv_room_information.setText(ROOM);
 
+        tv_notification_entry = (TextView) findViewById(R.id.tv_notification_entry);
+        tv_notification_entry.setTextColor(Color.rgb(25, 89, 2));
+
         iv_lightHomeAll = (ImageView) findViewById(R.id.iv_homeLightStatus);
         iv_lightHomeAll.setImageResource(R.drawable.ic_light_off);
 
         tb_lightHomeAll = (ToggleButton) findViewById(R.id.tb_LightHomeAll);
+
+        tb_settings_audio_greeting = (ToggleButton) findViewById(R.id.tb_settings_audio_greeting);
+        tb_settings_audio_greeting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    audioGreetingEnabled = true;
+                }
+                else
+                {
+                    audioGreetingEnabled = false;
+                }
+            }
+        });
 
 
         final Thread time = new Thread() {
@@ -180,8 +229,38 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
 
+        vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_dashboard_lights)));
+        vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_dashboard_patterns)));
+        vf.setDisplayedChild(vf.indexOfChild(findViewById(R.id.view_home)));
+
         //testing
        // handler.testing();
+    }
+
+
+    public void updateNotification(String type, String message)
+    {
+        if (type.equals("announce"))
+        {
+            tv_notification_entry.setText(message);
+            if (audioGreetingEnabled == true) {
+                String location = message.substring(0, message.indexOf("("));
+                String user = message.substring(message.indexOf(":") + 1);
+                tts.speak(user + " in the" + location, TextToSpeech.QUEUE_FLUSH, null);
+
+            }
+        }
+    }
+
+    public void updateTemps(Temp temp)
+    {
+        for (int i =0; i< temp.getTEMPS().size(); i++)
+        {
+            if (temp.getTEMPS().get(i)[0].contains(ROOM.substring(0, 3)))
+            {
+                tv_room_temperature.setText(temp.getTEMPS().get(i)[1] + " C");
+            }
+        }
     }
 
     private void getPatternId()
